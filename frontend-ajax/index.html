@@ -80,34 +80,94 @@
         </main>
     </body>
     <script type="text/javascript">
-        var ws = 'http://localhost:5000/churrasco'
+        /** Host + Endpoint da nossa aplicação do backend **/
+        var ws = 'http://localhost:5000/churrasco';
 
+        /** Este método do jQuery é 
+        executado assim que a página
+        é carregada. Faremos uma busca por
+        toda lista do churrasco ao
+        carregar a página */
         $(document).ready(function() {
-            $.ajax({
-                url: ws + '/buscarTodos',
-                dataType: 'json',
-                success: function(data) {
-                    populateTable(data);
-                }
-            });
+            listar();
         });
 
         function novo() {
-            $("#id").val('');
-            $("#carne").val('');
-            $("#peso").val('');;
+            limparCampos();
         }
 
+        /** Aqui vamos preencher os
+        campos do formulário com os dados
+        da linha selecionada */
         function editar(id) {
             $.ajax({
                 url: ws + '/buscarPorId/' + id,
                 dataType: 'json',
                 success: function(data) {
+                    /** O seletor $("#carne") serve
+                    para indicar para o jQuery que estamos
+                    buscando um campo com id='carne'.
+                    O # denota que estamos buscando pelo id
+                    da tag html. A função val() será utilizada
+                    para atribuir um valor para o campo. */
                     $("#id").val(data[0].id);
                     $("#carne").val(data[0].carne);
                     $("#peso").val(data[0].peso);
                 }
             });
+        }
+
+        function salvar() {
+            /** Montando um objeto 'churrasco'
+            com os dados submetidos do formulário */
+            var churrasco = {
+                id: $("#id").val(),
+                carne: $("#carne").val(),
+                peso: $("#peso").val()
+            }
+
+            if(churrasco.id != undefined && churrasco.id != '') { //Se nosso objeto tiver id, faremos um update
+                $.ajax({
+                    url: ws + '/atualizar',
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        id: churrasco.id,
+                        carne: churrasco.carne,
+                        peso: churrasco.peso
+                    },
+                    success: function(data) {
+                        /** Após o sucesso na atualização,
+                        * busco todos os registros
+                        * e populo novamente a tabela
+                        **/
+                        listar();
+
+                        /** Limpando campos do form */
+                        limparCampos();
+                    }
+                });
+            } else { //Caso contrário faremos um insert
+                $.ajax({
+                    url: ws + '/inserir',
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        carne: churrasco.carne,
+                        peso: churrasco.peso
+                    },
+                    success: function(data) {
+                        /** Após o sucesso na inserção,
+                        * busco todos os registros
+                        * e populo novamente a tabela
+                        **/
+                        listar();
+
+                        /** Limpando campos do form */
+                        limparCampos();
+                    }
+                });
+            }
         }
 
         //TODO: escrever o método de salvar
@@ -125,19 +185,29 @@
                     * busco todos os registros
                     * e populo novamente a tabela
                     **/
-                    $.ajax({
-                        url: ws + '/buscarTodos',
-                        dataType: 'json',
-                        success: function(data) {
-                            populateTable(data);
-                        }
-                    });
+                    listar();
+                }
+            });
+        }
+
+        function listar() {
+            $.ajax({
+                url: ws + '/buscarTodos',
+                dataType: 'json',
+                success: function(data) {
+                    populateTable(data);
                 }
             });
         }
 
         function populateTable(data) {
-            $("#lista-carne > tbody").empty();
+            /** O seletor $("#lista-carne > tbody") detona que
+            estaremos selecionando o tbody da table com id='lista-carne'.
+            A função empty() servirá para excluir todas as rows que essa
+            table venha a possuir.
+            A função append() servirá para para incluir o conteúdo passado
+            como parâmetro no tbody da 'lista-carne' */
+            $("#lista-carne > tbody").empty(); //Limpo a <table> antes de popular
             $.each(data, function() {
                 $("#lista-carne > tbody").append(`<tr>` +
                     `<td>` + this.id + `</td>` +
@@ -147,6 +217,13 @@
                     `<td><a onclick="remover(` + this.id + `)"><img class="responsive-img lista-img" src="img/remove.png"/></a></td>` +
                     `</tr>`);
             })
+        }
+
+        function limparCampos() {
+            /** Aqui estamos limpando todos os campos do form */
+            $("#id").val('');
+            $("#carne").val('');
+            $("#peso").val('');
         }
     </script>
 </html>

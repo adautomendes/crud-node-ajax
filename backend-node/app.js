@@ -29,7 +29,8 @@ var port = process.env.PORT || 5000;
 /* Aqui o 'churrasco' irá pegar as instâncias das Rotas do Express */
 var churrasco = express.Router();
 
-/* Rota de Teste para sabermos se tudo está realmente funcionando (acessar através: GET: http://localhost:8000/churrasco) */
+/* Para sabermos se tudo está realmente funcionando
+podemos acessar através de GET: http://localhost:8000/churrasco/buscarTodos) */
 churrasco.post('/inserir', function(req, res) {
     var carne = req.body.carne;
     var peso = req.body.peso;
@@ -97,7 +98,7 @@ churrasco.get('/buscarTodos', function(req, res) {
 });
 
 churrasco.get('/buscarPorId/:id', function(req, res) {
-    var id = req.params.id;
+    var id = req.params.id; //Aqui pegamos o ID como parâmetro, pois método GET não tem Body
 
     var connection = mysql.createConnection(objConn);
 
@@ -118,9 +119,7 @@ churrasco.get('/buscarPorId/:id', function(req, res) {
     connection.end();
 });
 
-//Requests DELETE em Angular aceitam Body com dificuldade, então usaremos POST
 churrasco.post('/remover', function(req, res) {
-    console.log(req.body);
     var id = req.body.id;
 
     var connection = mysql.createConnection(objConn);
@@ -142,8 +141,11 @@ churrasco.post('/remover', function(req, res) {
     connection.end();
 });
 
-/* Todas as nossas rotas serão prefixadas com '/churrasco' */
-app.use('/churrasco', churrasco);
+/** Todas as nossas rotas serão prefixadas com '/churrasco'.
+Para chamar todas as funções que chamarem o objeto 
+'churrasco' deveremos acessar o endpoint /churrasco/*
+*/
+app.use('/churrasco', churrasco); 
 
 //Iniciando o Servidor (Aplicação):
 //==============================================================
