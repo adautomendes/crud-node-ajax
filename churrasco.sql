@@ -19,44 +19,44 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pokemon_go`
+-- Database: `churrasco`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `pokemon`
+-- Estrutura da tabela `churrasco`
 --
 
-CREATE TABLE `pokemon` (
+CREATE TABLE `churrasco` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `cp` bigint(11) NOT NULL
+  `carne` text NOT NULL,
+  `peso` bigint(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `pokemon`
+-- Extraindo dados da tabela `churrasco`
 --
 
-INSERT INTO `pokemon` (`id`, `name`, `cp`) VALUES
-(1, 'Bulbasaur', 10),
-(2, 'Ivysaur', 20),
-(3, 'Venosaur', 30),
-(4, 'Charmander', 13),
-(5, 'Charmeleon', 24),
-(6, 'Charizard', 35),
-(7, 'Squirtle', 65),
-(8, 'Wartotle', 76),
-(9, 'Blastoise', 78);
+INSERT INTO `churrasco` (`id`, `carne`, `peso`) VALUES
+(1, 'Picanha', 2),
+(2, 'Maminha', 2),
+(3, 'Linguiça', 3),
+(4, 'Pernil', 1),
+(5, 'Contra Filé', 2),
+(6, 'Bacon', 5),
+(7, 'Lombo', 1),
+(8, 'Coração', 2),
+(9, 'Asa', 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `pokemon`
+-- Indexes for table `churrasco`
 --
-ALTER TABLE `pokemon`
+ALTER TABLE `churrasco`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -64,9 +64,9 @@ ALTER TABLE `pokemon`
 --
 
 --
--- AUTO_INCREMENT for table `pokemon`
+-- AUTO_INCREMENT for table `churrasco`
 --
-ALTER TABLE `pokemon`
+ALTER TABLE `churrasco`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 

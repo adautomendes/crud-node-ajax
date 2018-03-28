@@ -10,7 +10,7 @@ var objConn = {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'pokemon_go'
+        database: 'churrasco'
     };
 
 /** Configuração da variável 'app' para usar o 'bodyParser()'.
@@ -26,19 +26,19 @@ var port = process.env.PORT || 5000;
 //Rotas da nossa API:
 //==============================================================
 
-/* Aqui o 'pokemon' irá pegar as instâncias das Rotas do Express */
-var pokemon = express.Router();
+/* Aqui o 'churrasco' irá pegar as instâncias das Rotas do Express */
+var churrasco = express.Router();
 
-/* Rota de Teste para sabermos se tudo está realmente funcionando (acessar através: GET: http://localhost:8000/pokemon) */
-pokemon.post('/insert', function(req, res) {
-    var name = req.body.name;
-    var cp = req.body.cp;
+/* Rota de Teste para sabermos se tudo está realmente funcionando (acessar através: GET: http://localhost:8000/churrasco) */
+churrasco.post('/inserir', function(req, res) {
+    var carne = req.body.carne;
+    var peso = req.body.peso;
 
     var connection = mysql.createConnection(objConn);
 
     connection.connect();
 
-    var strQuery = "INSERT INTO pokemon (name, cp) VALUES ('" + name + "', '" + cp + "');";
+    var strQuery = "INSERT INTO churrasco (carne, peso) VALUES ('" + carne + "', '" + peso + "');";
 
     console.log(strQuery);
 
@@ -53,16 +53,16 @@ pokemon.post('/insert', function(req, res) {
     connection.end();
 });
 
-pokemon.post('/update', function(req, res) {
+churrasco.post('/atualizar', function(req, res) {
     var id = req.body.id;
-    var name = req.body.name;
-    var cp = req.body.cp;
+    var carne = req.body.carne;
+    var peso = req.body.peso;
 
     var connection = mysql.createConnection(objConn);
 
     connection.connect();
 
-    var strQuery = "UPDATE pokemon SET name = '" + name + "', cp = '" + cp + "' WHERE id = " + id + ";";
+    var strQuery = "UPDATE churrasco SET carne = '" + carne + "', peso = '" + peso + "' WHERE id = " + id + ";";
 
     console.log(strQuery);
 
@@ -77,11 +77,11 @@ pokemon.post('/update', function(req, res) {
     connection.end();
 });
 
-pokemon.get('/findAll', function(req, res) {
+churrasco.get('/buscarTodos', function(req, res) {
     var connection = mysql.createConnection(objConn);
     connection.connect();
 
-    var strQuery = "SELECT id, name, cp FROM pokemon";
+    var strQuery = "SELECT id, carne, peso FROM churrasco";
 
     console.log(strQuery);
 
@@ -96,14 +96,14 @@ pokemon.get('/findAll', function(req, res) {
     connection.end();
 });
 
-pokemon.get('/findById/:id', function(req, res) {
+churrasco.get('/buscarPorId/:id', function(req, res) {
     var id = req.params.id;
 
     var connection = mysql.createConnection(objConn);
 
     connection.connect();
 
-    var strQuery = "SELECT id, name, cp FROM pokemon WHERE id = " + id;
+    var strQuery = "SELECT id, carne, peso FROM churrasco WHERE id = " + id;
 
     console.log(strQuery);
 
@@ -119,7 +119,7 @@ pokemon.get('/findById/:id', function(req, res) {
 });
 
 //Requests DELETE em Angular aceitam Body com dificuldade, então usaremos POST
-pokemon.post('/remove', function(req, res) {
+churrasco.post('/remover', function(req, res) {
     console.log(req.body);
     var id = req.body.id;
 
@@ -127,7 +127,7 @@ pokemon.post('/remove', function(req, res) {
 
     connection.connect();
 
-    var strQuery = "DELETE FROM pokemon WHERE id = " + id;
+    var strQuery = "DELETE FROM churrasco WHERE id = " + id;
 
     console.log(strQuery);
 
@@ -142,8 +142,8 @@ pokemon.post('/remove', function(req, res) {
     connection.end();
 });
 
-/* Todas as nossas rotas serão prefixadas com '/pokemon' */
-app.use('/pokemon', pokemon);
+/* Todas as nossas rotas serão prefixadas com '/churrasco' */
+app.use('/churrasco', churrasco);
 
 //Iniciando o Servidor (Aplicação):
 //==============================================================
