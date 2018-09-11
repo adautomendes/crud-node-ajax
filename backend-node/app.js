@@ -30,7 +30,7 @@ var port = process.env.PORT || 5000;
 var churrasco = express.Router();
 
 /* Para sabermos se tudo está realmente funcionando
-podemos acessar através de GET: http://localhost:8000/churrasco/buscarTodos) */
+podemos acessar através de GET: http://localhost:5000/churrasco/buscarTodos) */
 churrasco.post('/inserir', function(req, res) {
     var carne = req.body.carne;
     var peso = req.body.peso;
